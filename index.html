@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>KITH TOOLS - Banking CV Builder (Tactile Edition)</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Source Serif 4 & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Serif+4:wght@600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Lenis Smooth Scrolling Library -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      outline: none;
+    }
+
+    :root {
+      /* Tactile Neo-Brutalist Color System (From KITH TOOLS) */
+      --bg:           #F7F6F2;
+      --card:         #FFFFFF;
+      --well:         #F2F0EA;
+      --ink:          #18181B;
+      --muted:        #71717A;
+      --muted-light:  #A1A1AA;
+
+      /* Accent Colors */
+      --yellow:       #F3C644;
+      --coral:        #F0645A;
+      --mint:         #3CD085;
+      --brown:        #AF6E44;
+      --charcoal:     #1E1E22;
+      --navy:         #1B3A5C;
+
+      /* Borders & Hard Shadows */
+      --border:       2px solid #18181B;
+      --border-thin:  1.5px solid #18181B;
+      --shadow-lg:    0 4px 0 #18181B;
+      --shadow-md:    0 3px 0 #18181B;
+      --shadow-sm:    0 2px 0 #18181B;
+
+      --serif:        'Source Serif 4', Georgia, 'Times New Roman', serif;
+      --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* LENIS SCROLL CSS */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+
+    ::-webkit-scrollbar { width: 0; }
+    button, input, textarea { font: inherit; color: inherit; }
+
+    /* ══ SCROLL REVEAL ANIMATIONS ══ */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s var(--ease-spring), transform 0.65s var(--ease-spring);
+      will-change: opacity, transform;
+    }
+    .reveal-item.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══ MAIN CONTAINER ══ */
+    .app-shell {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 20px 18px;
+    }
+
+    /* ══ TOP APP BAR & HERO (Matches KITH TOOLS) ══ */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sq-icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--card);
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      text-decoration: none;
+    }
+
+    .sq-icon-btn:hover {
+      background: var(--well);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .sq-icon-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 var(--ink);
+    }
+
+    .hero-headline {
+      font-size: clamp(34px, 7vw, 48px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    /* Quick Action Bar */
+    .quick-bar-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .quick-input-box {
+      flex: 1;
+      background: var(--card);
+      border: var(--border);
+      box-shadow: var(--shadow-md);
+      border-radius: 14px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .quick-input-box:hover {
+      transform: translateY(-1px);
+    }
+
+    .quick-input-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .quick-input-hash {
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .quick-plus-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: var(--yellow);
+      border: var(--border);
+      box-shadow: var(--shadow-md);
+      color: var(--ink);
+      font-size: 26px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .quick-plus-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .quick-plus-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 var(--ink);
+    }
+
+    /* Notification Banner */
+    .notif-banner {
+      background: var(--card);
+      border: var(--border);
+      box-shadow: var(--shadow-md);
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .notif-banner:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .notif-banner:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 var(--ink);
+    }
+
+    .notif-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .icon-tile {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+
+    .tile-mint     { background: var(--mint); }
+    .tile-coral    { background: var(--coral); }
+    .tile-yellow   { background: var(--yellow); }
+    .tile-brown    { background: var(--brown); }
+    .tile-charcoal { background: var(--charcoal); color: #FFFFFF; }
+
+    .notif-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .notif-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ══ SECTION HEADINGS ══ */
+    .section-heading {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ══ FOLDER CONTAINER SYSTEM (Matches KITH TOOLS) ══ */
+    .folder-wrap {
+      position: relative;
+      padding-top: 13px;
+      margin-bottom: 24px;
+    }
+
+    .folder-tab {
+      position: absolute;
+      top: 0;
+      left: 12px;
+      width: 96px;
+      height: 16px;
+      border: var(--border);
+      border-bottom: none;
+      border-radius: 9px 9px 0 0;
+      z-index: 1;
+    }
+
+    .folder-tab.coral    { background: var(--coral); }
+    .folder-tab.brown    { background: var(--brown); }
+    .folder-tab.charcoal { background: var(--charcoal); }
+    .folder-tab.yellow   { background: var(--yellow); }
+    .folder-tab.mint     { background: var(--mint); }
+
+    .folder-card {
+      position: relative;
+      z-index: 2;
+      background: var(--card);
+      border: var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Yellow Pill Badge */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--yellow);
+      color: var(--ink);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--ink);
+      white-space: nowrap;
+    }
+
+    .pill-badge.coral {
+      background: var(--coral);
+      color: #FFFFFF;
+    }
+
+    .pill-badge.mint {
+      background: var(--mint);
+      color: var(--ink);
+    }
+
+    /* ══ STATS 2x2 FOLDER GRID (From KITH TOOLS) ══ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .stat-folder-wrap {
+      position: relative;
+      padding-top: 12px;
+    }
+
+    .stat-folder-wrap .folder-tab {
+      width: 78px;
+      height: 14px;
+      left: 10px;
+    }
+
+    .stat-card {
+      position: relative;
+      z-index: 2;
+      background: var(--card);
+      border: var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 124px;
+      transition: transform 0.15s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stat-meta-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .stat-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-lbl {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .stat-val {
+      font-size: clamp(20px, 4vw, 26px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .stat-val.gv { color: #15803D; }
+    .stat-val.rv { color: #DC2626; }
+
+    /* ══ CARD HEADERS & FORM INPUTS (Matches KITH TOOLS) ══ */
+    .calc-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .calc-section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .calc-section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .calc-section-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: var(--border);
+      border-radius: 12px;
+      background: var(--well);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--muted-light);
+      font-weight: 600;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      background: #FFFFFF;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 110px;
+      display: block;
+    }
+
+    .field textarea.big {
+      min-height: 200px;
+      line-height: 1.65;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .row .field {
+      margin-bottom: 0;
+    }
+
+    /* Job & Education Entry Sub-Cards */
+    .entry {
+      border: var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: var(--well);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .entry-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid rgba(24, 24, 27, 0.14);
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+    }
+
+    .entry .field input,
+    .entry .field textarea {
+      background: var(--card);
+    }
+
+    /* Tactile Buttons */
+    .tactile-btn {
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+    }
+
+    .tactile-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .tactile-btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    .tactile-btn.yellow {
+      background: var(--yellow);
+      color: var(--ink);
+    }
+
+    .tactile-btn.coral {
+      background: var(--coral);
+      color: #FFFFFF;
+    }
+
+    .tactile-btn.ghost {
+      background: var(--card);
+      color: var(--ink);
+    }
+
+    .tactile-btn.small {
+      padding: 6px 12px;
+      font-size: 11px;
+      border-radius: 8px;
+    }
+
+    .tactile-btn.full {
+      width: 100%;
+      padding: 14px;
+    }
+
+    .form-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .form-actions-left {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .saved-status {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* ══ BANKING CV PAPER PREVIEW ══ */
+    .paper {
+      background: #FFFFFF;
+      border: var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow-sm);
+      padding: clamp(22px, 5vw, 48px);
+      color: #1A222C;
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .cv-head {
+      border-bottom: 2.5px solid var(--navy);
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+    }
+
+    .cv-name {
+      font: 700 clamp(1.7rem, 5vw, 2.35rem)/1.15 var(--serif);
+      color: var(--navy);
+      margin: 0;
+    }
+
+    .cv-role {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #3E4C5B;
+      margin: 5px 0 12px;
+    }
+
+    .cv-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cv-contact li {
+      padding-right: 14px;
+      margin-right: 14px;
+      border-right: 1.5px solid #C9D0D8;
+    }
+
+    .cv-contact li:last-child {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cv-sec {
+      margin-bottom: 22px;
+    }
+
+    .cv-sec:last-child {
+      margin-bottom: 0;
+    }
+
+    .cv-sec h3 {
+      font: 700 1.1rem/1.3 var(--serif);
+      color: var(--navy);
+      border-bottom: 1.5px solid #E1E5EA;
+      padding-bottom: 6px;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .cv-sec p {
+      margin: 0;
+      white-space: pre-line;
+      font-weight: 500;
+    }
+
+    .job {
+      margin-bottom: 18px;
+      break-inside: avoid;
+    }
+
+    .job:last-child {
+      margin-bottom: 0;
+    }
+
+    .job-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 2px 16px;
+    }
+
+    .job-title {
+      font-weight: 800;
+      font-size: 1.02rem;
+      color: var(--ink);
+    }
+
+    .job-date {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .job-co {
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .job ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .job li {
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 24px;
+      margin: 0;
+      padding-left: 20px;
+      font-weight: 600;
+    }
+
+    .btn-save-print {
+      width: 100%;
+      margin-top: 18px;
+      padding: 15px 20px;
+      background: var(--yellow);
+      border: var(--border);
+      box-shadow: var(--shadow-md);
+      border-radius: 12px;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-save-print:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-save-print:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    /* ══ SUPPORT SECTION (From KITH TOOLS) ══ */
+    .support-card-body {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .account-block {
+      background: var(--well);
+      border: var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .account-header {
+      padding: 10px 16px;
+      background: var(--charcoal);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .account-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .account-row:hover {
+      background: #E7E4DC;
+    }
+
+    .account-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .account-num-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-num {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.03em;
+    }
+
+    .copy-pill {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: var(--card);
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+    }
+
+    .account-divider {
+      height: 1.5px;
+      background: var(--ink);
+      opacity: 0.12;
+      margin: 0 16px;
+    }
+
+    .support-thanks {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    @media (max-width: 560px) {
+      .row { grid-template-columns: 1fr; }
+      .skills { grid-template-columns: 1fr; }
+    }
+
+    /* ══ CLEAN A4 CV PRINT ENGINE ══ */
+    @page { size: A4; margin: 14mm; }
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print, .top-bar, .quick-bar-row, .notif-banner, .folder-tab, .icon-tile {
+        display: none !important;
+      }
+      .app-shell, .folder-wrap, .folder-card {
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+      }
+      .paper {
+        border: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: none !important;
+        font-size: 11pt !important;
+        border-radius: 0 !important;
+      }
+      .cv-sec { break-inside: auto; }
+      .cv-sec h3 { break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- TOP NAVIGATION BAR (Matches KITH TOOLS) -->
+    <header class="top-bar reveal-item no-print">
+      <a href="#support-section" class="sq-icon-btn" title="Support & Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </a>
+      <div class="top-bar-right">
+        <a href="#preview-section" class="sq-icon-btn" title="Jump to CV Preview">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </a>
+        <button type="button" class="sq-icon-btn" onclick="window.print()" title="Save as PDF / Print CV">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO SECTION (Matches KITH TOOLS) -->
+    <section class="reveal-item no-print">
+      <h1 class="hero-headline">Build smart.<br>Export anytime.</h1>
+      <div class="hero-subtitle">Banking &amp; Finance CV Builder · Fill in your details and export an executive A4 PDF</div>
+
+      <!-- Quick Action Bar -->
+      <div class="quick-bar-row">
+        <div class="quick-input-box" onclick="quickAddJob()">
+          <div class="quick-input-left">
+            <span class="quick-input-hash">#</span>
+            <span id="quick-cv-prompt">Tap + to add a new work experience role...</span>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <button type="button" class="quick-plus-btn" onclick="quickAddJob()" title="Add Another Job">+</button>
+      </div>
+
+      <!-- Notification Status Banner -->
+      <div class="notif-banner" onclick="document.getElementById('preview-section').scrollIntoView({behavior:'smooth'})">
+        <div class="notif-left">
+          <div class="icon-tile tile-mint">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="notif-title" id="banner-cv-title">Executive Banking CV Ready</div>
+            <div class="notif-sub" id="banner-cv-sub">Auto-saved on your device · Tap to preview A4 document</div>
+          </div>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 2x2 FOLDER STATS GRID (Directly from KITH TOOLS "My Collections" layout) -->
+    <section class="reveal-item no-print">
+      <div class="section-heading">
+        <span>CV Profile Overview</span>
+        <span class="pill-badge" id="cv-ready-badge">AUTO-SAVED</span>
+      </div>
+      <div class="stats-grid" id="cv-stats-grid"></div>
+    </section>
+
+    <!-- DYNAMIC TACTILE FOLDER FORM -->
+    <section class="reveal-item no-print" aria-label="CV details">
+      <div class="section-heading">
+        <span>CV Folder Builder</span>
+        <span class="pill-badge">5 SECTIONS</span>
+      </div>
+      <form id="form" autocomplete="on" onsubmit="return false"></form>
+    </section>
+
+    <!-- LIVE CV PAPER PREVIEW SECTION -->
+    <section id="preview-section" class="reveal-item" aria-label="CV preview">
+      <div class="section-heading no-print">
+        <span>Live Executive CV Preview</span>
+        <span class="pill-badge mint">A4 PDF READY</span>
+      </div>
+
+      <div class="folder-wrap">
+        <div class="folder-tab yellow no-print"></div>
+        <div class="folder-card">
+          <div class="calc-section-header no-print">
+            <div class="calc-section-header-left">
+              <div class="icon-tile tile-yellow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+              </div>
+              <div>
+                <div class="calc-section-title">Executive Banking CV Sheet</div>
+                <div class="calc-section-sub">Formatted for clean A4 printing and PDF export</div>
+              </div>
+            </div>
+            <span class="pill-badge">PREVIEW</span>
+          </div>
+
+          <article class="paper" id="cv"></article>
+
+          <button type="button" class="btn-save-print no-print" id="printBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Save as PDF / Print CV</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPORT THE PROJECT SECTION (Copied Smoothly from KITH TOOLS) -->
+    <section id="support-section" class="reveal-item no-print" style="margin-top: 32px;">
+      <div class="section-heading">
+        <span>Support the Project</span>
+        <span class="pill-badge mint">FREE TOOLS</span>
+      </div>
+
+      <div class="folder-wrap">
+        <div class="folder-tab mint"></div>
+        <div class="folder-card">
+          <div class="calc-section-header">
+            <div class="calc-section-header-left">
+              <div class="icon-tile tile-yellow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                  <line x1="6" y1="1" x2="6" y2="4"></line>
+                  <line x1="10" y1="1" x2="10" y2="4"></line>
+                  <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+              </div>
+              <div>
+                <div class="calc-section-title">Buy me a coffee</div>
+                <div class="calc-section-sub">Fuel the next KITH TOOLS update</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="support-card-body">
+            Building and maintaining these tools takes late nights and a lot of caffeine.
+            If this website has helped your career journey, consider fueling the next update.
+            Your support helps cover server costs and keeps these tools free for everyone.
+          </div>
+
+          <div class="account-block">
+            <div class="account-header">
+              <span>ABA BANK</span>
+              <span style="opacity:0.75;font-size:10px">TAP TO COPY</span>
+            </div>
+            <div class="account-row" onclick="copyAcc('500 717 935', 'khr-copy')">
+              <span class="account-label">KHR Account</span>
+              <div class="account-num-wrap">
+                <span class="account-num">500 717 935</span>
+                <span class="copy-pill" id="khr-copy">COPY</span>
+              </div>
+            </div>
+            <div class="account-divider"></div>
+            <div class="account-row" onclick="copyAcc('003 678 734', 'usd-copy')">
+              <span class="account-label">USD Account</span>
+              <div class="account-num-wrap">
+                <span class="account-num">003 678 734</span>
+                <span class="copy-pill" id="usd-copy">COPY</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="support-thanks">
+            Thank you to all my friends for the incredible support!
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    /* ═══════════════
+       LENIS SMOOTH SCROLL & REVEAL OBSERVER (From KITH TOOLS)
+    ═══════════════ */
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+
+    document.querySelectorAll('.reveal-item').forEach((el, index) => {
+      el.style.transitionDelay = `${Math.min(index * 50, 200)}ms`;
+      revealObserver.observe(el);
+    });
+
+    /* ═══════════════
+       COPY ACCOUNT HELPER (From KITH TOOLS)
+    ═══════════════ */
+    function copyAcc(num, badgeId) {
+      const clean = num.replace(/\s+/g, '');
+      const temp = document.createElement('textarea');
+      temp.value = clean;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+
+      const badge = document.getElementById(badgeId);
+      if (badge) {
+        const orig = badge.textContent;
+        badge.textContent = 'COPIED!';
+        badge.style.background = '#3CD085';
+        setTimeout(() => {
+          badge.textContent = orig;
+          badge.style.background = '';
+        }, 1600);
+      }
+    }
+
+    /* ═══════════════
+       BANKING CV BUILDER ENGINE + 2x2 FOLDER STATS
+    ═══════════════ */
+    var KEY = 'banking-cv-builder-v2';
+    var DEF = {
+      name: 'Kith Seyha',
+      title: 'Senior Loan Officer',
+      phone: '012 225 227',
+      email: 'kith.seyha@bankingmail.com',
+      address: 'Phnom Penh, Cambodia',
+      link: '',
+      summary: 'Dedicated banking professional with over 5 years of experience in loan origination, retail banking and credit risk analysis. Proven record of growing client portfolios, ensuring regulatory compliance and driving financial service marketing to exceed branch targets.',
+      jobs: [
+        {
+          title: 'Senior Loan Officer',
+          company: 'Money Express Cambodia',
+          dates: 'Mar 2021 - Present',
+          desc: '• Managed a corporate loan portfolio exceeding $5 million with a default rate below 1%.\n• Conducted credit risk assessments for high-net-worth clients and SME businesses.\n• Led local marketing that increased branch service subscriptions by 25% year on year.\n• Built strong client relationships and cross-sold exchange services and credit lines.'
+        },
+        {
+          title: 'Banking Service Associate',
+          company: 'National Bank Retail Branch',
+          dates: 'Jun 2018 - Feb 2021',
+          desc: '• Processed daily transactions and handled client account inquiries.\n• Collected and verified documents for personal loan applications.\n• Promoted retail banking products directly to customers.'
+        }
+      ],
+      edu: [
+        {
+          degree: 'Bachelor of Business Administration in Finance',
+          school: 'Royal University of Phnom Penh',
+          year: '2018'
+        }
+      ],
+      skills: 'Credit Risk Analysis, Portfolio Management, Financial Marketing & Sales, Regulatory Compliance, Customer Relationship Management (CRM), Financial Forecasting',
+      langs: 'Khmer (Native), English (Professional)'
+    };
+
+    var BLANK = {
+      name: '', title: '', phone: '', email: '', address: '', link: '', summary: '',
+      jobs: [{ title: '', company: '', dates: '', desc: '' }],
+      edu: [{ degree: '', school: '', year: '' }],
+      skills: '', langs: ''
+    };
+
+    var S = load();
+    var form = document.getElementById('form');
+    var cv = document.getElementById('cv');
+    var savedEl;
+
+    function clone(o) { return JSON.parse(JSON.stringify(o)); }
+    function load() {
+      try {
+        var s = localStorage.getItem(KEY);
+        if (s) {
+          var o = JSON.parse(s);
+          if (o && o.jobs && o.edu) return o;
+        }
+      } catch (e) {}
+      return clone(DEF);
+    }
+
+    function save() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(S));
+        if (savedEl) savedEl.textContent = 'Saved on this device automatically.';
+      } catch (e) {
+        if (savedEl) savedEl.textContent = 'Auto-save is unavailable in this browser.';
+      }
+    }
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function get(p) {
+      return p.split('.').reduce(function(o, k) { return o == null ? o : o[k]; }, S);
+    }
+
+    function set(p, v) {
+      var k = p.split('.'), o = S;
+      for (var i = 0; i < k.length - 1; i++) o = o[k[i]];
+      o[k[k.length - 1]] = v;
+    }
+
+    var uid = 0;
+    function field(p, label, o) {
+      o = o || {};
+      var id = 'f' + (uid++), v = esc(get(p));
+      var ctl = o.rows
+        ? '<textarea id="' + id + '" data-p="' + p + '" class="' + (o.big ? 'big' : '') + '" rows="' + o.rows + '" placeholder="' + esc(o.ph || '') + '">' + v + '</textarea>'
+        : '<input id="' + id + '" data-p="' + p + '" type="' + (o.type || 'text') + '" value="' + v + '" placeholder="' + esc(o.ph || '') + '"' + (o.ac ? ' autocomplete="' + o.ac + '"' : '') + (o.im ? ' inputmode="' + o.im + '"' : '') + '>';
+      return '<div class="field"><label for="' + id + '">' + label + '</label>' + ctl + '</div>';
+    }
+
+    function buildForm() {
+      uid = 0;
+      var h = '';
+
+      // Folder 1: Personal Details (Coral Tab)
+      h += '<div class="folder-wrap">'
+        + '<div class="folder-tab coral"></div>'
+        + '<div class="folder-card">'
+        + '<div class="calc-section-header">'
+        + '<div class="calc-section-header-left">'
+        + '<div class="icon-tile tile-coral"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>'
+        + '<div><div class="calc-section-title">Personal Details</div><div class="calc-section-sub">Shown at the top of your CV header</div></div>'
+        + '</div>'
+        + '<span class="pill-badge">STEP 1</span>'
+        + '</div>'
+        + field('name', 'Full Name', { ac: 'name', ph: 'e.g. Kith Seyha' })
+        + field('title', 'Target Job Title', { ph: 'e.g. Senior Loan Officer' })
+        + '<div class="row">' + field('phone', 'Phone', { type: 'tel', ac: 'tel', im: 'tel' }) + field('email', 'Email', { type: 'email', ac: 'email', im: 'email' }) + '</div>'
+        + field('address', 'Location', { ac: 'street-address', ph: 'City, Country' })
+        + field('link', 'LinkedIn or Website (Optional)', { type: 'url', im: 'url', ph: 'linkedin.com/in/yourname' })
+        + '</div></div>';
+
+      // Folder 2: Professional Summary (Brown Tab)
+      h += '<div class="folder-wrap">'
+        + '<div class="folder-tab brown"></div>'
+        + '<div class="folder-card">'
+        + '<div class="calc-section-header">'
+        + '<div class="calc-section-header-left">'
+        + '<div class="icon-tile tile-brown"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>'
+        + '<div><div class="calc-section-title">Professional Summary</div><div class="calc-section-sub">Two to four sentences about your experience and strengths</div></div>'
+        + '</div>'
+        + '<span class="pill-badge">STEP 2</span>'
+        + '</div>'
+        + field('summary', 'Executive Summary', { rows: 5, ph: 'Summarize your banking expertise, portfolio achievements, and core strengths...' })
+        + '</div></div>';
+
+      // Folder 3: Work Experience (Charcoal Tab)
+      h += '<div class="folder-wrap" id="jobs-folder">'
+        + '<div class="folder-tab charcoal"></div>'
+        + '<div class="folder-card">'
+        + '<div class="calc-section-header">'
+        + '<div class="calc-section-header-left">'
+        + '<div class="icon-tile tile-charcoal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>'
+        + '<div><div class="calc-section-title">Work Experience</div><div class="calc-section-sub">Put your most recent banking or finance role first</div></div>'
+        + '</div>'
+        + '<span class="pill-badge">' + S.jobs.length + (S.jobs.length === 1 ? ' ROLE' : ' ROLES') + '</span>'
+        + '</div>';
+
+      S.jobs.forEach(function(j, i) {
+        h += '<div class="entry"><div class="entry-head"><span>Role #' + (i + 1) + '</span>'
+          + (S.jobs.length > 1 ? '<button type="button" class="tactile-btn coral small" data-del="jobs" data-i="' + i + '">Remove</button>' : '') + '</div>'
+          + field('jobs.' + i + '.title', 'Job Title', { ph: 'e.g. Senior Loan Officer' })
+          + '<div class="row">'
+          + field('jobs.' + i + '.company', 'Company or Bank', { ph: 'e.g. Money Express Cambodia' })
+          + field('jobs.' + i + '.dates', 'Dates', { ph: 'e.g. Mar 2021 - Present' })
+          + '</div>'
+          + field('jobs.' + i + '.desc', 'Responsibilities & Results (One achievement per line)', { rows: 7, big: true, ph: 'Write one achievement per line.\nExample: Managed a $5M loan portfolio with a default rate below 1%.' })
+          + '</div>';
+      });
+      h += '<button type="button" class="tactile-btn yellow full" data-add="jobs">+ Add Another Job</button></div></div>';
+
+      // Folder 4: Education (Yellow Tab)
+      h += '<div class="folder-wrap">'
+        + '<div class="folder-tab yellow"></div>'
+        + '<div class="folder-card">'
+        + '<div class="calc-section-header">'
+        + '<div class="calc-section-header-left">'
+        + '<div class="icon-tile tile-yellow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></div>'
+        + '<div><div class="calc-section-title">Education</div><div class="calc-section-sub">Academic degrees, certifications, and graduation years</div></div>'
+        + '</div>'
+        + '<span class="pill-badge">STEP 4</span>'
+        + '</div>';
+
+      S.edu.forEach(function(e, i) {
+        h += '<div class="entry"><div class="entry-head"><span>Education #' + (i + 1) + '</span>'
+          + (S.edu.length > 1 ? '<button type="button" class="tactile-btn coral small" data-del="edu" data-i="' + i + '">Remove</button>' : '') + '</div>'
+          + field('edu.' + i + '.degree', 'Degree or Certificate', { ph: 'e.g. Bachelor of Business Administration in Finance' })
+          + '<div class="row">' + field('edu.' + i + '.school', 'School or University') + field('edu.' + i + '.year', 'Year', { ph: 'e.g. 2018' }) + '</div></div>';
+      });
+      h += '<button type="button" class="tactile-btn yellow full" data-add="edu">+ Add Education</button></div></div>';
+
+      // Folder 5: Skills & Languages (Mint Tab)
+      h += '<div class="folder-wrap">'
+        + '<div class="folder-tab mint"></div>'
+        + '<div class="folder-card">'
+        + '<div class="calc-section-header">'
+        + '<div class="calc-section-header-left">'
+        + '<div class="icon-tile tile-mint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>'
+        + '<div><div class="calc-section-title">Skills &amp; Languages</div><div class="calc-section-sub">Core banking competencies and language proficiency</div></div>'
+        + '</div>'
+        + '<span class="pill-badge">STEP 5</span>'
+        + '</div>'
+        + field('skills', 'Core Skills (Separate with commas)', { rows: 4, ph: 'Credit Risk Analysis, Portfolio Management, Regulatory Compliance...' })
+        + field('langs', 'Languages', { ph: 'e.g. Khmer (Native), English (Professional)' })
+        + '</div></div>';
+
+      // Form Footer Actions
+      h += '<div class="form-actions-bar">'
+        + '<div class="form-actions-left">'
+        + '<button type="button" class="tactile-btn coral small" id="clearBtn">Clear All Fields</button>'
+        + '<button type="button" class="tactile-btn ghost small" id="sampleBtn">Restore Sample CV</button>'
+        + '</div>'
+        + '<p class="saved-status" id="saved" role="status">Saved on this device automatically.</p>'
+        + '</div>';
+
+      form.innerHTML = h;
+      savedEl = document.getElementById('saved');
+      form.querySelectorAll('textarea').forEach(grow);
+    }
+
+    function grow(t) {
+      t.style.height = 'auto';
+      t.style.height = (t.scrollHeight + 4) + 'px';
+    }
+
+    function bullets(text) {
+      var lines = String(text || '').split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+      if (!lines.length) return '';
+      return '<ul>' + lines.map(function(l) { return '<li>' + esc(l.replace(/^[•\-\*–·]\s*/, '')) + '</li>'; }).join('') + '</ul>';
+    }
+
+    function list(text) {
+      return String(text || '').split(/[,\n;]/).map(function(s) { return s.trim(); }).filter(Boolean);
+    }
+
+    function renderCVStats(jobsCount, eduCount, skillsCount, langsCount) {
+      var grid = document.getElementById('cv-stats-grid');
+      if (!grid) return;
+
+      var filledSections = 0;
+      if (S.name && S.name.trim()) filledSections++;
+      if (S.summary && S.summary.trim()) filledSections++;
+      if (jobsCount > 0) filledSections++;
+      if (eduCount > 0) filledSections++;
+      if (skillsCount > 0) filledSections++;
+      var pct = Math.round((filledSections / 5) * 100);
+
+      grid.innerHTML = `
+        <!-- Card 1: Coral Tab (Experience Roles) -->
+        <div class="stat-folder-wrap">
+          <div class="folder-tab coral"></div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div class="icon-tile tile-coral">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <div class="stat-meta-group">
+                <span class="stat-sub">History</span>
+                <span class="pill-badge">CAREER</span>
+              </div>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-lbl">Experience Roles</div>
+              <div class="stat-val">${jobsCount} ${jobsCount === 1 ? 'Role' : 'Roles'}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Brown Tab (Education) -->
+        <div class="stat-folder-wrap">
+          <div class="folder-tab brown"></div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div class="icon-tile tile-brown">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+              </div>
+              <div class="stat-meta-group">
+                <span class="stat-sub">Academic</span>
+                <span class="pill-badge">DEGREES</span>
+              </div>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-lbl">Education Entries</div>
+              <div class="stat-val">${eduCount}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Charcoal Tab (Core Skills) -->
+        <div class="stat-folder-wrap">
+          <div class="folder-tab charcoal"></div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div class="icon-tile tile-charcoal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div class="stat-meta-group">
+                <span class="stat-sub">${langsCount} Langs</span>
+                <span class="pill-badge">SKILLS</span>
+              </div>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-lbl">Core Competencies</div>
+              <div class="stat-val">${skillsCount}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Yellow Tab (Completion) -->
+        <div class="stat-folder-wrap">
+          <div class="folder-tab yellow"></div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div class="icon-tile tile-yellow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div class="stat-meta-group">
+                <span class="stat-sub">${filledSections}/5</span>
+                <span class="pill-badge">${pct === 100 ? 'READY' : 'DRAFT'}</span>
+              </div>
+            </div>
+            <div class="stat-bottom">
+              <div class="stat-lbl">Profile Readiness</div>
+              <div class="stat-val ${pct === 100 ? 'gv' : ''}">${pct}%</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      var contact = [S.phone, S.email, S.address, S.link].filter(function(x) { return x && x.trim(); });
+      var h = '<header class="cv-head"><h2 class="cv-name">' + esc(S.name || 'Your Name') + '</h2>'
+        + (S.title ? '<p class="cv-role">' + esc(S.title) + '</p>' : '')
+        + (contact.length ? '<ul class="cv-contact">' + contact.map(function(c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>' : '') + '</header>';
+
+      if (S.summary && S.summary.trim()) {
+        h += '<section class="cv-sec"><h3>Professional Summary</h3><p>' + esc(S.summary) + '</p></section>';
+      }
+
+      var jobs = S.jobs.filter(function(j) { return j.title || j.company || j.desc; });
+      if (jobs.length) {
+        h += '<section class="cv-sec"><h3>Work Experience</h3>' + jobs.map(function(j) {
+          return '<div class="job"><div class="job-top"><span class="job-title">' + esc(j.title) + '</span><span class="job-date">' + esc(j.dates) + '</span></div>'
+            + (j.company ? '<div class="job-co">' + esc(j.company) + '</div>' : '') + bullets(j.desc) + '</div>';
+        }).join('') + '</section>';
+      }
+
+      var edu = S.edu.filter(function(e) { return e.degree || e.school; });
+      if (edu.length) {
+        h += '<section class="cv-sec"><h3>Education</h3>' + edu.map(function(e) {
+          return '<div class="job"><div class="job-top"><span class="job-title">' + esc(e.degree) + '</span><span class="job-date">' + esc(e.year) + '</span></div>'
+            + (e.school ? '<div class="job-co" style="margin:0">' + esc(e.school) + '</div>' : '') + '</div>';
+        }).join('') + '</section>';
+      }
+
+      var sk = list(S.skills);
+      if (sk.length) {
+        h += '<section class="cv-sec"><h3>Core Skills</h3><ul class="skills">' + sk.map(function(s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></section>';
+      }
+
+      var lg = list(S.langs);
+      if (lg.length) {
+        h += '<section class="cv-sec"><h3>Languages</h3><p>' + lg.map(esc).join(', ') + '</p></section>';
+      }
+
+      cv.innerHTML = h;
+
+      renderCVStats(jobs.length, edu.length, sk.length, lg.length);
+
+      var bTitle = document.getElementById('banner-cv-title');
+      var bSub = document.getElementById('banner-cv-sub');
+      if (bTitle && bSub) {
+        bTitle.textContent = (S.name || 'Candidate') + (S.title ? ' · ' + S.title : '');
+        bSub.textContent = jobs.length + ' experience role' + (jobs.length !== 1 ? 's' : '') + ' · ' + sk.length + ' core skills · Tap to preview A4 CV';
+      }
+    }
+
+    function quickAddJob() {
+      S.jobs.push({ title: '', company: '', dates: '', desc: '' });
+      buildForm();
+      render();
+      save();
+      var inp = form.querySelectorAll('[data-p^="jobs.' + (S.jobs.length - 1) + '."]')[0];
+      if (inp) {
+        inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function() { inp.focus(); }, 250);
+      }
+    }
+
+    form.addEventListener('input', function(e) {
+      var p = e.target.getAttribute('data-p');
+      if (!p) return;
+      set(p, e.target.value);
+      if (e.target.tagName === 'TEXTAREA') grow(e.target);
+      render();
+      save();
+    });
+
+    form.addEventListener('click', function(e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      var add = b.getAttribute('data-add'), del = b.getAttribute('data-del');
+      if (add === 'jobs') { S.jobs.push({ title: '', company: '', dates: '', desc: '' }); }
+      else if (add === 'edu') { S.edu.push({ degree: '', school: '', year: '' }); }
+      else if (del) { S[del].splice(+b.getAttribute('data-i'), 1); }
+      else if (b.id === 'clearBtn') { if (!confirm('Clear every field? This cannot be undone.')) return; S = clone(BLANK); }
+      else if (b.id === 'sampleBtn') { if (!confirm('Replace your details with the sample CV?')) return; S = clone(DEF); }
+      else return;
+      buildForm();
+      render();
+      save();
+      if (add) {
+        var inp = form.querySelectorAll('[data-p^="' + add + '.' + (S[add].length - 1) + '."]')[0];
+        if (inp) inp.focus();
+      }
+    });
+
+    document.getElementById('printBtn').onclick = function() {
+      window.print();
+    };
+
+    buildForm();
+    render();
+    save();
+  </script>
+</body>
+</html>
